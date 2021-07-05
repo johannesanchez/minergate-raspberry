@@ -1,11 +1,11 @@
-name: Workflow to buildx speedtest-image
+name: Workflow to buildx minergate image
 on:
   push:
     branches:
-    - master
+    - main
   pull_request:
     branches:
-    - master
+    - main
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
       
       - name: Test Build a dummy image
         run: |
-          docker buildx build --platform linux/amd64,linux/arm/v7 docker-speedtest
+          docker buildx build --platform linux/amd64,linux/arm/v7 .
       
       - name: Build the image and copy to Dockerhub
         run: |
