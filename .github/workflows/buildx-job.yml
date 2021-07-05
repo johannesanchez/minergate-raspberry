@@ -1,0 +1,32 @@
+name: Workflow to buildx speedtest-image
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      
+      - name: Test Build a dummy image
+        run: |
+          docker buildx build --platform linux/amd64,linux/arm/v7 docker-speedtest
+      
+      - name: Build the image and copy to Dockerhub
+        run: |
+          docker buildx build --push \
+            --tag johannesanchez/minergate:latest \
+            --platform linux/amd64,linux/arm/v7 .
