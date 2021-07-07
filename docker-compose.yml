@@ -1,0 +1,7 @@
+version: '3'
+services:
+    minergate:
+        container_name: minergate
+        image: johannesanchez/minergate
+        command: ./opt/cpuminer-multi/cpuminer -a cryptonight -o stratum+tcp://xmr.pool.minergate.com:45700 -u email_address
+        restart: always
